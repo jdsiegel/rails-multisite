@@ -6,3 +6,4 @@ end
 
 require 'multisite/action_controller'
 require 'multisite/action_mailer'
+require 'multisite/action_view'
