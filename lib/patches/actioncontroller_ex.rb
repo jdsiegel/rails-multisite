@@ -34,7 +34,7 @@ ActionController::Base.class_eval do
   protected
   def add_multisite_path
     if current_site
-      new_path = File.join(RAILS_ROOT, 'sites', @active_site, 'views')
+      new_path = File.join(RAILS_ROOT, 'app', 'sites', @active_site, 'views')
       self.prepend_view_path(new_path)
       logger.info "  Template View Paths: #{self.view_paths.inspect}"
     end
