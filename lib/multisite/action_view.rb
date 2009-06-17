@@ -2,17 +2,11 @@ module Multisite
   module ActionView
     module Helpers
       module AssetTagHelper
-        def compute_public_path_with_multisite(source, dir, ext = nil, include_host = true)
+        def site_image_path(source)
           if @controller.current_site
-            compute_public_path_without_multisite(source, "#{@controller.current_site}/#{dir}", ext, include_host)
+            compute_public_path(source, "#{@controller.current_site}/images")
           else
-            compute_public_path_without_multisite(source, dir, ext, include_host)
-          end
-        end
-        
-        class << self
-          def included(base)
-            base.alias_method_chain :compute_public_path, :multisite
+            compute_public_path(source, "images")
           end
         end
       end
