@@ -18,7 +18,7 @@ module Multisite
             method_missing_without_multisite(method, *args, &block)
             last_exception = nil
             break # Stop iteration if call succeeded
-          rescue ActionView::MissingTemplate => e
+          rescue ::ActionView::MissingTemplate => e
             last_exception = e
           end
         end
