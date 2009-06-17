@@ -49,7 +49,7 @@ module Multisite
           self.class.asset_host = asset_host
         end
 
-        ::ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion :site => [current_site]
+        ::ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion :site => ["/#{current_site}/stylesheets/application"]
 
         return true
       end    
