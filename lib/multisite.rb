@@ -1,6 +1,6 @@
 module Multisite
   class Config
-    cattr_accessor :sites
+    cattr_accessor :sites, :assets_dir, :stylesheets_dir
   end
 end  
 

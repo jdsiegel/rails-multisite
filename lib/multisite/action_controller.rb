@@ -30,11 +30,11 @@ module Multisite
       end
     
       def setup_site
-        return unless current_site and Multisite::Config.sites[current_site]
+        return unless current_site and Config.sites[current_site]
       
         logger.info "Activating site: #{current_site}"
       
-        app_path = Multisite::Config.sites[current_site]['app_path']
+        app_path = Config.sites[current_site]['app_path']
       
         if app_path
           [self, ::ActionController::Base].each do |o|
@@ -43,13 +43,14 @@ module Multisite
           end
         end
 
-        asset_host = Multisite::Config.sites[current_site]['asset_host']
+        asset_host = Config.sites[current_site]['asset_host']
         
         if RAILS_ENV != 'development' and asset_host
           self.class.asset_host = asset_host
         end
 
-        ::ActionView::Helpers::AssetTagHelper.register_stylesheet_expansion :site => ["/#{current_site}/stylesheets/application"]
+        Config.assets_dir = File.join((defined?(Rails.public_path) ? Rails.public_path : "public"), current_site)
+        Config.stylesheets_dir = "#{Config.assets_dir}/stylesheets"
 
         return true
       end    
