@@ -10,7 +10,7 @@ module Multisite
       def acts_as_multisite(options={})
         include InstanceMethods
         write_inheritable_attribute("site", options[:site]) if options[:site]
-        before_filter :setup_site
+        before_filter :set_site
         helper_method :current_site
       end
     end
@@ -18,7 +18,7 @@ module Multisite
     module InstanceMethods
       # Retrieves the currently set site
       def current_site
-        @current_site ||= self.class.read_inheritable_attribute("site") || determine_site_from_request_host
+        Multisite.current_site = self.class.read_inheritable_attribute("site") || determine_site_from_request_host
       end
 
       protected
@@ -29,7 +29,7 @@ module Multisite
         nil
       end
     
-      def setup_site
+      def set_site
         return unless current_site and Config.sites[current_site]
       
         logger.info "Activating site: #{current_site}"
