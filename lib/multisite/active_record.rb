@@ -5,29 +5,20 @@ module MultiSite
     end
   
     module ClassMethods
-#      cattr_accessor :is_site_scoped
-      # def is_site_scoped?
-      #   false
-      # end
-      
-      def acts_as_multisite_scoped(options={})
-        # return if is_site_scoped?
-        # options = {
-        #   :shareable => false
-        # }.merge(options)
-
+      def multisite_scoped(options={})
         class_eval <<-EO
           extend MultiSite::ActiveRecord::ClassMethods
           include MultiSite::ActiveRecord::InstanceMethods          
 
           before_validation :set_site
+          validates_presence_of :site
         EO
         
         # belongs_to :site
         # Site.send(:has_many, plural_symbol_for_class)
 
         # site is set in a before_validation call added to UserActionObserver
-        # validates_presence_of :site unless options[:shareable]
+         # unless options[:shareable]
 
         class << self
           # attr_accessor :shareable
@@ -81,7 +72,7 @@ module MultiSite
       # end
 
       def current_site!
-        raise(ActiveRecord::SiteNotFound, "#{self} is site-scoped but current_site is #{self.current_site.inspect}", caller) if !self.current_site
+        raise(Multisite::SiteNotFound, "#{self} is site-scoped but current_site is #{self.current_site.inspect}", caller) if !self.current_site
         self.current_site
       end
 

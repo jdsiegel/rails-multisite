@@ -37,6 +37,4 @@ module Multisite
   end
 end
     
-if Object.const_defined?("ActionView")
-  ActionView::Helpers::AssetTagHelper.send(:include, Multisite::ActionView::Helpers::AssetTagHelper)
-end
+#ActionView::Helpers::AssetTagHelper.send(:include, Multisite::ActionView::Helpers::AssetTagHelper)

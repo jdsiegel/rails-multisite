@@ -1,6 +1,6 @@
 module MultiSite
   module ActionController
-    module Routing 
+    module RouteSet
       def self.included(base)
         base.alias_method_chain :extract_request_environment, :site
       end
@@ -13,4 +13,4 @@ module MultiSite
   end
 end
  
-ActionController::Routing::RouteSet.send :include, MultiSite::ActionController::Routing
+ActionController::Routing::RouteSet.send :include, MultiSite::ActionController::RouteSet
