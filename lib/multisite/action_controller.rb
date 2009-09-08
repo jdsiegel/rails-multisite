@@ -9,6 +9,11 @@ module Multisite
     module ClassMethods
       def acts_as_multisite(options={})
         include InstanceMethods
+
+        def self.page_cache_directory
+          read_inheritable_attribute("site_page_cache_directory") || super
+        end
+
         write_inheritable_attribute("site", options[:site]) if options[:site]
         before_filter :setup_site
         helper_method :current_site
@@ -28,20 +33,25 @@ module Multisite
         end      
         nil
       end
-    
+
+      def set_site_page_cache_directory(app_path)
+        self.class.write_inheritable_attribute("site_page_cache_directory", 
+                            app_path ? File.join(RAILS_ROOT, app_path, 'cache') : nil)
+      end
+
+      def set_site_view_paths(app_path)
+        prepend_view_path(File.join(RAILS_ROOT, app_path, 'views')) if app_path
+      end
+
       def setup_site
         return unless current_site and Config.sites[current_site]
       
         logger.info "Activating site: #{current_site}"
       
         app_path = Config.sites[current_site]['app_path']
-      
-        if app_path
-          [self, ::ActionController::Base].each do |o|
-            o.page_cache_directory = File.join(RAILS_ROOT, app_path, 'cache') 
-            o.view_paths = [File.join(RAILS_ROOT, app_path, 'views'), File.join(RAILS_ROOT, 'app', 'views')]
-          end
-        end
+
+        set_site_page_cache_directory(app_path)
+        set_site_view_paths(app_path)
 
         asset_host = Config.sites[current_site]['asset_host']
         

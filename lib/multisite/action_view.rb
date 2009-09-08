@@ -38,5 +38,6 @@ module Multisite
 end
     
 if Object.const_defined?("ActionView")
+  puts "!! including"
   ActionView::Helpers::AssetTagHelper.send(:include, Multisite::ActionView::Helpers::AssetTagHelper)
 end
