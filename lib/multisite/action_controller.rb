@@ -34,9 +34,9 @@ module Multisite
         nil
       end
 
-      def set_site_page_cache_directory(app_path)
+      def set_site_page_cache_directory(host)
         self.class.write_inheritable_attribute("site_page_cache_directory", 
-                            app_path ? File.join(RAILS_ROOT, app_path, 'cache') : nil)
+                            host ? File.join(RAILS_ROOT, 'public/cache', host) : nil)
       end
 
       def set_site_view_paths(app_path)
@@ -50,7 +50,7 @@ module Multisite
       
         app_path = Config.sites[current_site]['app_path']
 
-        set_site_page_cache_directory(app_path)
+        set_site_page_cache_directory(Config.sites[current_site]['host'])
         set_site_view_paths(app_path)
 
         asset_host = Config.sites[current_site]['asset_host']
