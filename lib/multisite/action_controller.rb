@@ -15,6 +15,7 @@ module Multisite
         end
 
         write_inheritable_attribute("site", options[:site]) if options[:site]
+        write_inheritable_attribute("default_site", options[:default_site]) if options[:default_site]
         before_filter :setup_site
         helper_method :current_site
       end
@@ -31,7 +32,7 @@ module Multisite
         Multisite::Config.sites.each do |site, config|
           return site if config['host'] == request.host
         end      
-        nil
+        self.class.read_inheritable_attribute("default_site")
       end
 
       def set_site_page_cache_directory(host)
